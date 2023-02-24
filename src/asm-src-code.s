@@ -280,7 +280,7 @@ main
 			MOVS	R1,#NULL
 			STRB	R1,[R0,#0]
 			
-			LDR	R0,=RunStopWatch
+			LDR	R0,=RunStopWatch	;Initializes the count to 0
 			MOVS	R1,#0
 			STRB	R1,[R0,#0]
 			LDR	R0,=Count
@@ -353,7 +353,7 @@ CompareLoop		LDRB	R1,[R0,R4]		;Load next character of user input string
 			BEQ	Accepted
 			B	CompareLoop		;If characters are equal but not null, continue loop
 			
-Accepted		LDR	R0,=acceptPrompt
+Accepted		LDR	R0,=acceptPrompt	;Print "Access granted"
 			MOVS	R1,#MAX_STRING
 			BL	PutStringSB
 			B	EndAndLoop
@@ -475,9 +475,9 @@ Init_UART0_IRQ	PROC	{R0-R13}
 			ENDP
 			LTORG
 ;****************************************************************				
-UART0_ISR	PROC	{}
+UART0_ISR	PROC	{R0-R13}
 ;****************************************************************
-; 
+; Handler for when an interrupt is received from the UART0
 ; Input
 ;	None
 ; Output
@@ -521,9 +521,9 @@ EndISR			CPSIE	I
 			POP	{R4,PC}
 			ENDP
 ;****************************************************************
-Init_PIT_IRQ	PROC	{R0-R14}
+Init_PIT_IRQ	PROC	{R0-R13}
 ;****************************************************************
-; 
+; Initializes the PIT to enable interrupts and set the period to 0.01s
 ; Inputs : None
 ; Outputs : None
 ; Local Variables
@@ -583,9 +583,9 @@ Init_PIT_IRQ	PROC	{R0-R14}
 			BX	LR
 			ENDP
 ;****************************************************************
-PIT_ISR		PROC	{}
+PIT_ISR		PROC	{R0-R13}
 ;****************************************************************
-; 
+; Handler for when an interrupt is received from the PIT
 ; Input
 ;	None
 ; Output
